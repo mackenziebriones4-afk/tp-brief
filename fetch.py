@@ -56,11 +56,11 @@ FEEDS = [
 KEV_URL = "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json"
 
 # ---- cities ---------------------------------------------------------------------------
-TK_CITIES = {"İstanbul": ["istanbul", "i̇stanbul"], "Ankara": ["ankara"], "İzmir": ["izmir", "i̇zmir"],
+TK_CITIES = {"İstanbul": ["istanbul", "i̇stanbul", "taksim", "kadıköy", "kadikoy", "bosphorus", "sultanahmet", "beşiktaş", "besiktas"], "Ankara": ["ankara", "çankaya", "kızılay", "kizilay"], "İzmir": ["izmir", "i̇zmir"],
              "Bursa": ["bursa"], "Antalya": ["antalya"], "Adana": ["adana"], "Konya": ["konya"],
              "Gaziantep": ["gaziantep"], "Kayseri": ["kayseri"], "Mersin": ["mersin"],
              "Diyarbakır": ["diyarbakir", "diyarbakır"], "Samsun": ["samsun"], "Trabzon": ["trabzon"]}
-PH_CITIES = {"Manila": ["manila", "metro manila"], "Cebu City": ["cebu city", "cebu"],
+PH_CITIES = {"Manila": ["manila", "metro manila", "liwasang bonifacio", "intramuros", "luneta", "rizal park", "malacañang", "malacanang", "makati", "taguig", "bgc", "quezon city", "pasay", "mandaluyong", "ortigas", "mmda", "naia", "edsa"], "Cebu City": ["cebu city", "cebu"],
              "Davao City": ["davao"], "Zamboanga City": ["zamboanga"],
              "Cagayan de Oro": ["cagayan de oro"], "Iloilo City": ["iloilo"], "Bacolod": ["bacolod"],
              "Baguio": ["baguio"], "Angeles": ["angeles city"], "General Santos": ["general santos"],
@@ -69,10 +69,19 @@ PH_CITIES = {"Manila": ["manila", "metro manila"], "Cebu City": ["cebu city", "c
 WELL = {"tk": [("İstanbul", "IST"), ("Ankara", "ANK"), ("İzmir", "IZM"), ("Bursa", "BUR"), ("Antalya", "ANT")],
         "ph": [("Manila", "MNL"), ("Cebu City", "CEB"), ("Davao City", "DVO"), ("Baguio", "BAG"), ("Iloilo City", "ILO")]}
 
+PH_WORDS = ["philippine", "pinoy", "filipino", "pilipinas", "manila", "pagasa", "marcos", "pbbm", "duterte", "senate", "house of representatives",
+            "dole", "doj", "dswd", "dilg", "dpwh", "doh", "deped", "pnp", "afp", "mmda", "lgu", "barangay", "peso", "bsp", "ncr", "luzon", "visayas",
+            "mindanao", "cagayan", "ilocos", "pampanga", "bulacan", "cavite", "laguna", "batangas", "rizal", "palawan", "leyte", "samar", "negros",
+            "bohol", "zambales", "tarlac", "nueva ecija", "benguet", "albay", "bicol", "sulu", "maguindanao", "bangsamoro", "caraga", "ofw", "pagcor",
+            "ombudsman", "sandiganbayan", "comelec", "ndrrmc", "phivolcs", "meralco", "lrt", "mrt", "ph "]
+
 # ---- keyword rules (simple on purpose) ------------------------------------------------
-RED = ["ransomware", "breach", "hacked", "cyberattack", "cyber attack", "data leak", "leaked", "outage", "blackout",
-       "earthquake", "typhoon", "flood", "flooding", "landslide", "explosion", "fire", "killed", "dead", "deaths",
-       "collapse", "crash", "state of calamity", "evacuat", "wildfire", "attack", "airstrike", "suicide"]
+RED_STRONG = ["ransomware", "breach", "hacked", "cyberattack", "cyber attack", "data leak", "blackout", "earthquake",
+              "typhoon", "flooding", "landslide", "explosion", "state of calamity", "evacuat", "wildfire", "airstrike",
+              "tsunami", "mass shooting", "volcano", "eruption"]
+RED_MED = ["leaked", "outage", "flood", "fire", "killed", "dead", "deaths", "collapse", "crash", "attack", "suicide"]
+ROUTINE = ["road crash", "vehicular", "motorcycle", "traffic", "collision", "bus crash", "car crash", "hit-and-run"]
+RED = RED_STRONG + RED_MED   # used by the city score
 YEL = ["warning", "alert", "vulnerability", "exploit", "scam", "phishing", "storm", "signal no", "rain", "delay",
        "shortage", "protest", "strike", "price hike", "inflation", "investigation", "probe", "suspend", "ban",
        "fraud", "arrest", "fine", "recall", "drought", "heat"]
@@ -87,6 +96,27 @@ POS = ["opens", "launch", "wins", "win ", "improve", "record high", "festival", 
 UNVERIFIED = ["reportedly", "alleged", "allegedly", "unconfirmed", "claims", "claimed", "rumor", "rumour", "sources say", "suspected"]
 SENSITIVE = ["hospital", "child", "children", "minor", "victim", "killed", "dead", "deaths", "school", "student", "rape", "suicide", "patients"]
 LEGAL = ["arrest", "court", "sued", "lawsuit", "charged", "accused", "hacker group", "indict", "trial", "convict", "suspect"]
+# ---- Turkey relevance: a cyber / IT / tech brief, not general news ----
+TR_WORDS = ["türkiye", "turkiye", "turkey", "turkish", "btk", "usom", "kvkk", "turkcell", "türk telekom", "turk telekom",
+            "baykar", "aselsan", "togg", "tübitak", "tubitak", "bist", "e-devlet"]
+CYBER_STRONG = ["cyber", "hack", "ransomware", "malware", "phishing", "spyware", "ddos", "data breach", "data leak", "leaked data",
+                "vulnerab", "zero-day", "zero day", "encryption", "firewall", "personal data", "identity theft", "infosec", "botnet"]
+TECH = ["artificial intelligence", " ai ", "chip", "semiconductor", "5g", "telecom", "satellite", "software", "startup", "technology",
+        "e-government", "digital", "electric vehicle", "battery", "data center", "cloud", "blockchain", "robot", "camera",
+        "surveillance", "drone detection", "internet", "fintech", "cobot"]
+BLOCK_RE = re.compile(r"\b(war|ceasefire|missiles?|troops|military|army|idf|israel|israeli|gaza|palestin\w*|iran|iranian|ukraine|russia|russian|"
+                      r"hamas|hezbollah|football|tennis|basketball|league|cup|goal|alcaraz|wimbledon|derby|match|election|parliament|protest\w*)\b", re.I)
+
+
+def tk_relevant(text):
+    strong = has(text, CYBER_STRONG)
+    if BLOCK_RE.search(text) and not strong:
+        return False
+    if strong:
+        return True
+    return bool(has(text, TECH) and (has(text, TR_WORDS) or find_city(text, TK_CITIES)))
+
+
 PALETTE = [("#1f9c8a", "#0a3550"), ("#2f6fd6", "#0b2a63"), ("#5a6fb8", "#1b2452"), ("#3f9a4a", "#123a1c")]
 
 
@@ -192,9 +222,15 @@ def norm(s):
 def build_story(it, feed, mode):
     text = it["title"]
     full = it["title"] + " " + it["summary"]
-    red, yel = has(full, RED), has(full, YEL)
-    lvl = "r" if red else "y" if yel else "g"
-    blink = (lvl == "r" and len(red) >= 2) or (lvl == "y" and len(yel) >= 3)
+    strong, med, yel = has(full, RED_STRONG), has(full, RED_MED), has(full, YEL)
+    routine = bool(has(full, ROUTINE))
+    if strong or (len(med) >= 2 and not routine):
+        lvl = "r"
+    elif med or yel:
+        lvl = "y"
+    else:
+        lvl = "g"
+    blink = (lvl == "r" and len(strong) + len(med) >= 2 and bool(strong)) or (lvl == "y" and len(yel) + len(med) >= 3)
     incident = bool(has(full, INCIDENT))
     table = TK_CITIES if mode == "tk" else PH_CITIES
     city_t, city_s = find_city(it["title"], table), find_city(it["summary"], table)
@@ -316,13 +352,12 @@ def main():
         used.append((f, ok, len(got), used_url or f["home"], err))
 
     tk_items = [i for i in all_items if owner[id(i)]["mode"] == "tk"]
-    ph_items = [i for i in all_items if owner[id(i)]["mode"] == "ph"]
-    # Turkey is a cyber / IT / tech brief: keep tech-fit stories, and only top up with serious incidents if there are few
+    # Philippine brief: drop world news that the Philippine feeds also carry
+    ph_items = [i for i in all_items if owner[id(i)]["mode"] == "ph"
+                and (has(i["title"] + " " + i["summary"], PH_WORDS) or find_city(i["title"] + " " + i["summary"], PH_CITIES))]
+    # Turkey is a cyber / IT / tech brief: war, politics, sport and general news are left out
     tk_all = pick(tk_items, owner, "tk", 40, 72)
-    tk = [x for x in tk_all if has(x[1]["title"] + " " + x[1]["recap"], CYBER)]
-    if len(tk) < 3:
-        tk += [x for x in tk_all if x not in tk and x[1]["lvl"] in ("r", "y")][:3 - len(tk)]
-    tk = tk[:6]
+    tk = [x for x in tk_all if tk_relevant(x[1]["title"] + " " + x[1]["recap"])][:6]   # fewer stories is better than off-topic ones
     ph = pick(ph_items, owner, "ph", 10, 48)
 
     tk_stories, tk_ex = [], []
