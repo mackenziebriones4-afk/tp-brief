@@ -1,0 +1,39 @@
+{
+ "weeks": [
+  "16 Nov"
+ ],
+ "tk": {
+  "İstanbul": [
+   83
+  ],
+  "Ankara": [
+   80
+  ],
+  "İzmir": [
+   70
+  ],
+  "Bursa": [
+   70
+  ],
+  "Antalya": [
+   68
+  ]
+ },
+ "ph": {
+  "Manila": [
+   80
+  ],
+  "Cebu City": [
+   83
+  ],
+  "Davao City": [
+   70
+  ],
+  "Baguio": [
+   80
+  ],
+  "Iloilo City": [
+   70
+  ]
+ }
+}
