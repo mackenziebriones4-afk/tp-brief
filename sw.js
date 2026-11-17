@@ -1,6 +1,6 @@
 /* Terminal Paradigm Brief: offline worker.
    Keeps a copy of the app so it opens with no internet. Change VERSION on every update. */
-var VERSION = "tp-brief-2026-11-17-1";
+var VERSION = "tp-brief-2026-11-18-1";
 var SHELL = ["./", "index.html", "data.js", "geo.js", "map.js", "logo.png", "manifest.webmanifest", "icon-192.png", "icon-512.png"];
 
 self.addEventListener("install", function (e) {
@@ -16,6 +16,13 @@ self.addEventListener("fetch", function (e) {
   var url = new URL(req.url), own = url.origin === self.location.origin;
   var font = url.hostname === "fonts.googleapis.com" || url.hostname === "fonts.gstatic.com";
   if (!own && !font) return;
+  if (own && /\/live\.js$/.test(url.pathname)) {      /* the daily file: newest copy first, saved copy only when offline */
+    e.respondWith(fetch(req, { cache: "no-cache" }).then(function (res) {
+      if (res && res.ok) { var copy = res.clone(); caches.open(VERSION).then(function (c) { c.put(req, copy); }); return res; }
+      return caches.match(req, { ignoreSearch: true }).then(function (hit) { return hit || res; });
+    }).catch(function () { return caches.match(req, { ignoreSearch: true }).then(function (hit) { return hit || Response.error(); }); }));
+    return;
+  }
   e.respondWith(caches.open(VERSION).then(function (cache) {
     return cache.match(req, { ignoreSearch: own }).then(function (hit) {
       var fresh = fetch(req).then(function (res) {
