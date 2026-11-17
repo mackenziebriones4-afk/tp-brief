@@ -702,14 +702,16 @@ svg .tp{font-family:var(--font-data);font-size:11px;font-weight:600;fill:var(--t
     $("stNote").hidden = !s.orig;
     fillStory();
     $("sheet").hidden = false; $("sheet").scrollTop = 0; $("stClose").focus();
+    ensureDepth();
   }
   function closeStory(){
     if($("sheet").hidden) return;
     $("sheet").hidden = true;
     var b = document.querySelector(".news.sel"); if(b) b.focus();
   }
-  $("stClose").addEventListener("click",closeStory);
-  document.addEventListener("keydown",function(e){ if(e.key==="Escape") closeStory(); });
+  function closeStoryBtn(){ var wasOpen = !$("sheet").hidden; closeStory(); if(wasOpen && curView()==="home") dropDepth(); }
+  $("stClose").addEventListener("click",closeStoryBtn);
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape") closeStoryBtn(); });
   $("narrow").addEventListener("click",function(){
     narrowed = !narrowed;
     this.setAttribute("aria-pressed",narrowed);
@@ -783,12 +785,28 @@ svg .tp{font-family:var(--font-data);font-size:11px;font-weight:600;fill:var(--t
   function net(){ var on = navigator.onLine!==false; $("net").className = "net"+(on?"":" off"); $("net").lastElementChild.textContent = on?"ONLINE":"OFFLINE"; }
   addEventListener("online",net); addEventListener("offline",net); net();
 
-  /* ---- tabs ---- */
+  /* ---- tabs, and the phone's back button ----
+     Back closes an open story first, then returns to Home from any other tab, and leaves the app only from Home.
+     One extra history entry exists while you are away from Home; it is added and dropped as you move. */
+  var depth = false, ignoreN = 0;
+  function ensureDepth(){ if(!depth){ try{ history.pushState({tp:1},""); depth = true; }catch(e){} } }
+  function dropDepth(){ if(depth){ depth = false; ignoreN++; history.back(); } }
+  function curView(){ var on = document.querySelector(".view.on"); return on ? on.id.slice(2) : "home"; }
+  function showTab(name){
+    $("sheet").hidden = true;
+    document.querySelectorAll(".tabs button").forEach(function(x){ x.setAttribute("aria-selected", x.dataset.v===name); });
+    document.querySelectorAll(".view").forEach(function(v){ v.classList.toggle("on", v.id==="v-"+name); });
+  }
   document.querySelector(".tabs").addEventListener("click",function(e){
     var b = e.target.closest("button"); if(!b) return;
-    $("sheet").hidden = true;
-    this.querySelectorAll("button").forEach(function(x){ x.setAttribute("aria-selected", x===b); });
-    document.querySelectorAll(".view").forEach(function(v){ v.classList.toggle("on", v.id==="v-"+b.dataset.v); });
+    showTab(b.dataset.v);
+    if(b.dataset.v==="home") dropDepth(); else ensureDepth();
+  });
+  addEventListener("popstate",function(){
+    if(ignoreN>0){ ignoreN--; return; }
+    depth = false;                                       /* the back press used up our extra entry */
+    if(!$("sheet").hidden){ closeStory(); if(curView()!=="home") ensureDepth(); return; }
+    if(curView()!=="home") showTab("home");
   });
 
   /* ---- notes: kept on this phone only ---- */

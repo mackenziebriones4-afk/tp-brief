@@ -1,6 +1,6 @@
 /* Terminal Paradigm Brief: offline worker.
    Keeps a copy of the app so it opens with no internet. Change VERSION on every update. */
-var VERSION = "tp-brief-2026-11-18-1";
+var VERSION = "tp-brief-2026-11-18-2";
 var SHELL = ["./", "index.html", "data.js", "geo.js", "map.js", "logo.png", "manifest.webmanifest", "icon-192.png", "icon-512.png"];
 
 self.addEventListener("install", function (e) {

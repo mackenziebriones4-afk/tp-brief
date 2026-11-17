@@ -96,27 +96,6 @@ POS = ["opens", "launch", "wins", "win ", "improve", "record high", "festival", 
 UNVERIFIED = ["reportedly", "alleged", "allegedly", "unconfirmed", "claims", "claimed", "rumor", "rumour", "sources say", "suspected"]
 SENSITIVE = ["hospital", "child", "children", "minor", "victim", "killed", "dead", "deaths", "school", "student", "rape", "suicide", "patients"]
 LEGAL = ["arrest", "court", "sued", "lawsuit", "charged", "accused", "hacker group", "indict", "trial", "convict", "suspect"]
-# ---- Turkey relevance: a cyber / IT / tech brief, not general news ----
-TR_WORDS = ["türkiye", "turkiye", "turkey", "turkish", "btk", "usom", "kvkk", "turkcell", "türk telekom", "turk telekom",
-            "baykar", "aselsan", "togg", "tübitak", "tubitak", "bist", "e-devlet"]
-CYBER_STRONG = ["cyber", "hack", "ransomware", "malware", "phishing", "spyware", "ddos", "data breach", "data leak", "leaked data",
-                "vulnerab", "zero-day", "zero day", "encryption", "firewall", "personal data", "identity theft", "infosec", "botnet"]
-TECH = ["artificial intelligence", " ai ", "chip", "semiconductor", "5g", "telecom", "satellite", "software", "startup", "technology",
-        "e-government", "digital", "electric vehicle", "battery", "data center", "cloud", "blockchain", "robot", "camera",
-        "surveillance", "drone detection", "internet", "fintech", "cobot"]
-BLOCK_RE = re.compile(r"\b(war|ceasefire|missiles?|troops|military|army|idf|israel|israeli|gaza|palestin\w*|iran|iranian|ukraine|russia|russian|"
-                      r"hamas|hezbollah|football|tennis|basketball|league|cup|goal|alcaraz|wimbledon|derby|match|election|parliament|protest\w*)\b", re.I)
-
-
-def tk_relevant(text):
-    strong = has(text, CYBER_STRONG)
-    if BLOCK_RE.search(text) and not strong:
-        return False
-    if strong:
-        return True
-    return bool(has(text, TECH) and (has(text, TR_WORDS) or find_city(text, TK_CITIES)))
-
-
 PALETTE = [("#1f9c8a", "#0a3550"), ("#2f6fd6", "#0b2a63"), ("#5a6fb8", "#1b2452"), ("#3f9a4a", "#123a1c")]
 
 
@@ -355,9 +334,12 @@ def main():
     # Philippine brief: drop world news that the Philippine feeds also carry
     ph_items = [i for i in all_items if owner[id(i)]["mode"] == "ph"
                 and (has(i["title"] + " " + i["summary"], PH_WORDS) or find_city(i["title"] + " " + i["summary"], PH_CITIES))]
-    # Turkey is a cyber / IT / tech brief: war, politics, sport and general news are left out
+    # Turkey is a cyber / IT / tech brief: keep tech-fit stories, and only top up with serious incidents if there are few
     tk_all = pick(tk_items, owner, "tk", 40, 72)
-    tk = [x for x in tk_all if tk_relevant(x[1]["title"] + " " + x[1]["recap"])][:6]   # fewer stories is better than off-topic ones
+    tk = [x for x in tk_all if has(x[1]["title"] + " " + x[1]["recap"], CYBER)]
+    if len(tk) < 3:
+        tk += [x for x in tk_all if x not in tk and x[1]["lvl"] in ("r", "y")][:3 - len(tk)]
+    tk = tk[:6]
     ph = pick(ph_items, owner, "ph", 10, 48)
 
     tk_stories, tk_ex = [], []
