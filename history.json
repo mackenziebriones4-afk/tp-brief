@@ -1,38 +1,49 @@
 {
  "weeks": [
-  "16 Nov"
+  "16 Nov",
+  "23 Nov"
  ],
  "tk": {
   "İstanbul": [
+   68,
    68
   ],
   "Ankara": [
-   80
+   80,
+   83
   ],
   "İzmir": [
+   70,
    70
   ],
   "Bursa": [
-   70
+   70,
+   80
   ],
   "Antalya": [
+   80,
    80
   ]
  },
  "ph": {
   "Manila": [
+   68,
    68
   ],
   "Cebu City": [
+   80,
    80
   ],
   "Davao City": [
-   80
+   80,
+   68
   ],
   "Baguio": [
+   68,
    68
   ],
   "Iloilo City": [
+   80,
    80
   ]
  }
