@@ -334,6 +334,40 @@ svg .tp{font-family:var(--font-data);font-size:11px;font-weight:600;fill:var(--t
 #stNoteBtn{justify-self:start;min-height:40px;padding:0 14px}
 #stNoteBtn:disabled{opacity:.6}
 
+
+/* ---------- weekly scan (very dark gray, apart from the daily navy cards) ---------- */
+:root{--wk-bg:#111214;--wk-line:rgba(255,255,255,.09);--wk-glow:91,150,255}
+.wk-head{display:flex;justify-content:space-between;align-items:baseline;gap:6px;margin:8px 2px 0;font-family:var(--font-data);font-size:8.5px;letter-spacing:.1em;color:var(--muted)}
+.wk-head b{color:var(--text);font-weight:600}
+.wk{position:relative;display:block;width:100%;text-align:left;background:var(--wk-bg);border:1px solid var(--wk-line);border-radius:6px;padding:8px 8px 7px;flex:none;cursor:pointer}
+.wk:focus-visible{outline:2px solid var(--tac-blue);outline-offset:2px}
+.wk.new{border-color:rgba(var(--wk-glow),.75);box-shadow:0 0 0 1px rgba(var(--wk-glow),.35),0 0 14px rgba(var(--wk-glow),.4)}
+.wk.fk{opacity:.5;filter:saturate(.3)}
+.wk.past{opacity:.62;filter:saturate(.3);box-shadow:none}
+.wk-top{display:flex;flex-wrap:wrap;gap:3px;align-items:center;font-family:var(--font-data);font-size:7.5px;letter-spacing:.07em;color:var(--muted)}
+.wk-chip{border:1px solid var(--wk-line);border-radius:3px;padding:0 3px}
+.wk-new{color:#cfe0ff;text-shadow:0 0 8px rgba(var(--wk-glow),.9);font-weight:600}
+.wk h3{font-family:var(--font-head);font-weight:600;font-size:11.5px;line-height:1.25;margin:5px 0 5px}
+.wk-conf{display:block;font-family:var(--font-data);font-size:9px;letter-spacing:.04em;font-weight:600}
+.wk-bar{display:block;height:3px;border-radius:2px;background:rgba(255,255,255,.1);margin-top:3px;overflow:hidden}
+.wk-bar i{display:block;height:100%;background:#8fa3c4;border-radius:2px}
+.wk.new .wk-bar i{background:rgb(var(--wk-glow))}
+.wk-more{display:none;margin-top:6px;font-size:10px;line-height:1.35;color:var(--text)}
+.wk.open .wk-more{display:block}
+.wk-more p{margin-bottom:5px}
+.wk-src{display:flex;flex-wrap:wrap;gap:4px;margin-top:3px}
+.wk-src a{color:var(--tac-blue);font-family:var(--font-data);font-size:8.5px;text-decoration:underline;text-underline-offset:2px}
+.wbanner{flex:none;background:var(--wk-bg);border:1px solid rgba(var(--wk-glow),.75);border-radius:6px;padding:8px;box-shadow:0 0 14px rgba(var(--wk-glow),.4)}
+.wbanner h4{font-family:var(--font-head);font-size:11px;font-weight:700;line-height:1.25;margin-bottom:5px}
+.wbanner ul{list-style:none;display:grid;gap:3px;margin-bottom:6px}
+.wbanner li button{text-align:left;font-size:10px;line-height:1.3;color:var(--text)}
+.wbanner li button:before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:rgb(var(--wk-glow));box-shadow:0 0 6px rgb(var(--wk-glow));margin-right:5px;vertical-align:middle}
+.wbanner .more{font-family:var(--font-data);font-size:8.5px;color:var(--muted)}
+.wbanner .dis{display:block;width:100%;min-height:28px;border:1px solid var(--wk-line);border-radius:5px;font-family:var(--font-head);font-weight:600;font-size:10px}
+.an-wk{display:grid;gap:8px}
+.an-wk .wk-head{margin:0}
+.an-nowk{font-size:12px;color:var(--muted);line-height:1.4}
+
 /* ---------- loading screen ---------- */
 .splash{position:fixed;inset:0;z-index:100;background:var(--navy);display:grid;place-items:center;animation:splashOut .4s ease-out 1.6s forwards}
 .splash img{width:min(52vw,220px);aspect-ratio:1;border-radius:50%;opacity:0;animation:logoIn 1.6s ease-out forwards}
@@ -379,7 +413,9 @@ svg .tp{font-family:var(--font-data);font-size:11px;font-weight:600;fill:var(--t
     <section class="view on" id="v-home" style="grid-column:1/-1;grid-template-columns:var(--left) 1fr">
       <div class="col">
         <div class="col-scroll" id="col">
+          <div id="wbanner" class="wbanner" hidden></div>
           <div id="stories" style="display:contents"></div>
+          <div id="weekly" style="display:contents"></div>
 
           <div class="card block update">
             <h4>UPDATE:</h4>
@@ -388,9 +424,9 @@ svg .tp{font-family:var(--font-data);font-size:11px;font-weight:600;fill:var(--t
           </div>
 
           <div class="card block">
-            <h4>ALGORITHM CONTENT</h4>
+            <h4 id="anTitle">ALGORITHM CONTENT</h4>
             <div id="miniAttn"></div>
-            <div class="mini-cap">Growing niches · 14-day change · app estimate · SAMPLE</div>
+            <div class="mini-cap" id="miniAttnCap">Growing niches · 14-day change · app estimate · SAMPLE</div>
             <div id="miniBars"></div>
             <div class="mini-cap" id="miniBarsCap" style="margin-bottom:0"></div>
             <button class="linkbtn" id="openTrends">Open Trends</button>
@@ -451,6 +487,10 @@ svg .tp{font-family:var(--font-data);font-size:11px;font-weight:600;fill:var(--t
         <div class="scale" aria-hidden="true"><span>Not okay</span><i></i><span>Doing well</span></div>
         <div id="cityHist"></div>
         <p class="fine">Touch a week to read its date and percentage. The cities follow the TK / PH switch on Home.</p>
+      </div>
+      <div class="panel" id="pastPanel">
+        <div class="pg-head"><h3>Weekly scan · past weeks</h3><span class="tag">FADED</span></div>
+        <div class="an-wk" id="pastWeeks"><p class="an-nowk">Weekly scan not loaded yet.</p></div>
       </div>
       <div class="panel">
         <h4 id="intelHd">INTEL · SAMPLE</h4>
@@ -737,6 +777,7 @@ svg .tp{font-family:var(--font-data);font-size:11px;font-weight:600;fill:var(--t
     if(X) renderCities();
     if(maps) $("zoomBtn").setAttribute("aria-pressed", maps[mode].view==="center");
     renderStories(); tickClocks();
+    if(typeof renderAnalytics==="function" && AN) renderAnalytics();
   }
   $("btnTk").addEventListener("click",function(){ setMode("tk"); });
   $("btnPh").addEventListener("click",function(){ setMode("ph"); });
@@ -1208,6 +1249,122 @@ svg .tp{font-family:var(--font-data);font-size:11px;font-weight:600;fill:var(--t
   });
   $("openTrends").addEventListener("click",function(){ document.querySelector('.tabs button[data-v="trends"]').click(); });
 
+
+  /* ---- weekly analytics: analytics/index.json lists the weeks, one file per week. Missing or broken: the old panel stays. ---- */
+  var AN = null;
+  var TOPIC_COL = ["#5B96FF","#F2C744","#B58CFF"];
+  function shortTopic(t){ return t.length>17 ? t.slice(0,16).trim()+"…" : t; }
+  function slug(t){ return t.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,48); }
+  function loadAnalytics(){
+    if(!window.fetch) return;
+    fetch("analytics/index.json",{cache:"no-cache"}).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(idx){
+      return Promise.all(idx.weeks.slice(-5).map(function(id){
+        return fetch("analytics/"+id+".json",{cache:"no-cache"}).then(function(r){ if(!r.ok) throw 0; return r.json(); });
+      }));
+    }).then(function(ws){
+      ws.sort(function(a,b){ return a.id<b.id ? -1 : 1; });
+      var cur = ws[ws.length-1], prev = ws.length>1 ? ws[ws.length-2] : null, seen = {};
+      if(prev) prev.items.forEach(function(it){ seen[it.key || slug(it.title)] = 1; });
+      cur.items.forEach(function(it){ it.key = it.key || slug(it.title); it.isNew = !seen[it.key]; it.returning = !!prev && !it.isNew; });
+      AN = {weeks:ws, cur:cur, prev:prev};
+      renderAnalytics();
+    }).catch(function(){ AN = null; });
+  }
+  function wkItems(){
+    if(!AN) return [];
+    var m = mode.toUpperCase();
+    return AN.cur.items.filter(function(it){ return it.region===m || it.region==="Global"; }).sort(function(a,b){
+      return (a.fakish-b.fakish) || (b.conf-a.conf) || (b.niche-a.niche);
+    });
+  }
+  function wkCard(it,past){
+    var srcs = it.sources.map(function(s){ return '<a href="'+esc(s.url)+'" target="_blank" rel="noopener">'+esc(s.name)+'</a>'; }).join("");
+    return '<div class="wk'+(it.isNew&&!past?" new":"")+(it.fakish?" fk":"")+(past?" past":"")+'" data-k="'+esc(it.key)+'" role="button" tabindex="0" aria-expanded="false">'+
+      '<span class="wk-top"><span class="wk-chip">'+esc(it.category.toUpperCase())+'</span><span class="wk-chip">'+esc(it.type.toUpperCase())+'</span><span>NICHE '+it.niche+'/5</span>'+
+      (it.isNew&&!past?'<span class="wk-new">NEW</span>':(it.returning&&!past?'<span>RETURNING</span>':''))+'</span>'+
+      '<h3>'+esc(it.title)+'</h3>'+
+      '<span class="wk-conf">CONFIDENCE: '+it.conf+'%</span><span class="wk-bar"><i style="width:'+it.conf+'%"></i></span>'+
+      '<span class="wk-more"><p>'+esc(it.why)+'</p><span class="wk-src">'+srcs+'</span></span></div>';
+  }
+  function renderWeekly(){
+    var list = wkItems();
+    $("weekly").innerHTML = '<div class="wk-head"><span>WEEKLY SCAN</span><span><b>'+esc(AN.cur.label.toUpperCase())+'</b> · '+list.length+'</span></div>'+
+      list.map(function(it){ return wkCard(it,false); }).join("");
+  }
+  function renderBanner(){
+    var el = $("wbanner"), cur = AN.cur, news = cur.items.filter(function(i){ return i.isNew && !i.fakish; });
+    if(store.get("tp.an.seen")===cur.id || !news.length){ el.hidden = true; return; }
+    el.innerHTML = '<h4>Analytics updated, here\'s what\'s new:</h4><ul>'+
+      news.slice(0,3).map(function(i){ return '<li><button data-k="'+esc(i.key)+'">'+esc(i.title)+'</button></li>'; }).join("")+'</ul>'+
+      (news.length>3 ? '<p class="more">+'+(news.length-3)+' more below</p>' : '')+
+      '<button class="dis" id="wbDis">Got it</button>';
+    el.hidden = false;
+  }
+  function renderAnMini(){
+    var ws = AN.weeks, n = ws.length, W = 126, H = 72;
+    var tp = Object.keys(AN.cur.topics).sort(function(a,b){ return AN.cur.topics[b]-AN.cur.topics[a] || (a<b?-1:1); }).slice(0,3);
+    var mx = 1; ws.forEach(function(w){ tp.forEach(function(t){ mx = Math.max(mx, w.topics[t]||0); }); });
+    var x = function(i){ return n>1 ? 6 + i*(W-16)/(n-1) : W-10; }, y = function(v){ return 6 + (1-v/mx)*(H-14); };
+    var s = '<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Items per topic, one point per week">';
+    [0.5,1].forEach(function(f){ s += '<line x1="0" x2="'+W+'" y1="'+y(mx*f)+'" y2="'+y(mx*f)+'" stroke="var(--grid)" stroke-width="1"/>'; });
+    tp.forEach(function(t,k){
+      var c = TOPIC_COL[k], pts = ws.map(function(w,i){ return [x(i), y(w.topics[t]||0), i===n-1]; });
+      if(n>1) s += '<path d="'+pts.map(function(p,i){ return (i?"L":"M")+p[0].toFixed(1)+" "+p[1].toFixed(1); }).join("")+'" fill="none" stroke="'+c+'" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" opacity=".55"/>';
+      pts.forEach(function(p){ s += '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+(p[2]?3:2)+'" fill="'+c+'" '+(p[2]?'stroke="var(--panel)" stroke-width="1.5" style="filter:drop-shadow(0 0 3px '+c+')"':'opacity=".5"')+'/>'; });
+    });
+    s += '</svg><div class="mini-leg">'+tp.map(function(t,k){
+      return '<span style="--c:'+TOPIC_COL[k]+'"><i class="sw"></i>'+esc(shortTopic(t))+'<em class="lvl-word">'+AN.cur.topics[t]+'</em></span>';
+    }).join("")+'</div>';
+    $("miniAttn").innerHTML = s;
+    $("miniAttnCap").textContent = "Top topics this week · items per topic"+(n>1 ? "" : " · lines start next week")+" · weekly scan";
+
+    /* one bar per week: the calm score, 100 is a quiet week */
+    var bw = 13, band = W/Math.max(n,5), base = 48, b = '<svg viewBox="0 0 '+W+' 74" role="img" aria-label="Weekly calm score">';
+    b += '<line x1="0" x2="'+W+'" y1="4" y2="4" stroke="var(--grid)" stroke-width="1"/>';
+    ws.forEach(function(w,i){
+      var v = w.health[mode], cx = band*i+band/2, cur = i===n-1;
+      b += '<g'+(cur?' style="filter:drop-shadow(0 0 4px '+wellColor(v)+')"':' opacity=".42" style="filter:saturate(.4)"')+'>'+
+           '<path d="'+colPath(cx-bw/2,base,bw,Math.max(3,v/100*44))+'" fill="'+wellColor(v)+'"/></g>'+
+           '<text x="'+cx+'" y="59" text-anchor="middle" class="tl">W'+esc(w.id.split("-W")[1])+'</text>'+
+           '<text x="'+cx+'" y="70" text-anchor="middle" class="tv">'+v+'%</text>';
+    });
+    b += '<line x1="0" x2="'+W+'" y1="'+base+'" y2="'+base+'" stroke="var(--grid)" stroke-width="1"/></svg>';
+    $("miniBars").innerHTML = b;
+    $("miniBarsCap").textContent = "Weekly calm score · "+(mode==="tk"?"TÜRKİYE":"PHILIPPINES")+" · 100 is a quiet week · weekly scan";
+    $("anTitle").textContent = "ANALYTICS · "+AN.cur.label.toUpperCase();
+  }
+  function renderPast(){
+    var past = AN.weeks.slice(0,-1).reverse();
+    if(!past.length){ $("pastWeeks").innerHTML = '<p class="an-nowk">Past weeks show here, faded, after the next weekly update.</p>'; return; }
+    $("pastWeeks").innerHTML = past.map(function(w){
+      var m = mode.toUpperCase(), its = w.items.filter(function(i){ return i.region===m || i.region==="Global"; }).slice(0,6);
+      return '<div class="wk-head"><span>WEEK OF <b>'+esc(w.label.toUpperCase())+'</b></span><span>CALM '+w.health[mode]+'%</span></div>'+
+        its.map(function(i){ i.key = i.key || slug(i.title); return wkCard(i,true); }).join("");
+    }).join("");
+  }
+  function renderAnalytics(){
+    if(!AN) return;
+    renderWeekly(); renderBanner(); renderAnMini(); renderPast();
+  }
+  function wkToggle(e){
+    if(e.target.closest("a")) return;
+    var c = e.target.closest(".wk"); if(!c) return;
+    var o = c.classList.toggle("open"); c.setAttribute("aria-expanded",o);
+  }
+  document.addEventListener("click",function(e){
+    if(e.target.closest("#wbDis")){ store.set("tp.an.seen",AN.cur.id); $("wbanner").hidden = true; return; }
+    var jb = e.target.closest("#wbanner li button");
+    if(jb){
+      var c = document.querySelector('#weekly .wk[data-k="'+jb.dataset.k+'"]');
+      if(c){ c.classList.add("open"); c.setAttribute("aria-expanded","true"); $("col").scrollTop = c.offsetTop - 8; }
+      return;
+    }
+    if(e.target.closest(".wk")) wkToggle(e);
+  });
+  document.addEventListener("keydown",function(e){
+    if((e.key==="Enter"||e.key===" ") && e.target.classList && e.target.classList.contains("wk")){ e.preventDefault(); wkToggle(e); }
+  });
+
   if(X){ renderMini(); renderTrends(); renderStatus(); renderAngles(); renderCities(); }
 
   /* offline copy of the app. Hosts that do not allow it are skipped quietly. */
@@ -1217,6 +1374,7 @@ svg .tp{font-family:var(--font-data);font-size:11px;font-weight:600;fill:var(--t
 
   initMaps();
   renderTicker(); applyMode(); renderPost(); renderNotes();
+  loadAnalytics();
 })();
 </script>
 </body>

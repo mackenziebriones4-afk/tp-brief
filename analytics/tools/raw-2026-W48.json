@@ -1,0 +1,307 @@
+{
+ "id": "2026-W48",
+ "week_start": "2026-11-23",
+ "label": "23 Nov",
+ "window": "Nov 17 to Nov 24, 2026",
+ "items": [
+  {
+   "id": "w48-01",
+   "title": "CrowdStrike to acquire Zscaler in a $43.9B all-stock deal",
+   "category": "Cyber",
+   "type": "trend",
+   "niche": 1,
+   "region": "Global",
+   "topic": "Security consolidation",
+   "why": "Biggest security deal of the year, and it pitches Zero Trust for AI. Easy hook for a consolidation explainer.",
+   "when": "Nov 23",
+   "sources": [
+    {
+     "name": "SEC 8-K (CrowdStrike)",
+     "url": "https://www.sec.gov/Archives/edgar/data/0001535527/000110465926130785/tm2630454d1_ex99-1.htm",
+     "tier": "primary",
+     "read": "full page"
+    },
+    {
+     "name": "Daily Sabah",
+     "url": "https://www.dailysabah.com/business/economy/crowdstrike-to-acquire-zscaler-in-44b-deal-as-cyber-threats-grow",
+     "tier": "outlet",
+     "read": "headline and summary (daily job)"
+    }
+   ]
+  },
+  {
+   "id": "w48-02",
+   "title": "OpenAI launches GPT-6.2 Astra and GPT-6.2 Sol",
+   "category": "AI",
+   "type": "release",
+   "niche": 1,
+   "region": "Global",
+   "topic": "Frontier model releases",
+   "why": "Astra got cheaper and the launch follows a cancelled GPT-6.1 Astra over permission problems. Story angle: safety versus speed.",
+   "when": "Nov 17",
+   "sources": [
+    {
+     "name": "Digital Trends",
+     "url": "https://www.digitaltrends.com/computing/openai-gpt-6-2-astra-sol-launch/",
+     "tier": "outlet",
+     "read": "full page"
+    }
+   ]
+  },
+  {
+   "id": "w48-03",
+   "title": "Microsoft Perception goes generally available for AI security agents",
+   "category": "Cyber",
+   "type": "release",
+   "niche": 2,
+   "region": "Global",
+   "topic": "Security consolidation",
+   "why": "Red, blue and green team agents in one platform. Shows where security operations are heading.",
+   "when": "Ignite, Nov 17-20",
+   "sources": [
+    {
+     "name": "Petri",
+     "url": "https://petri.com/?p=781586",
+     "tier": "outlet",
+     "read": "full page"
+    }
+   ]
+  },
+  {
+   "id": "w48-04",
+   "title": "Entra adds controls for AI agents, including an MCP firewall (preview)",
+   "category": "AI",
+   "type": "release",
+   "niche": 4,
+   "region": "Global",
+   "topic": "AI agent security",
+   "why": "Agents now get their own identities and access rules. A niche, concrete topic for cloud and IT audiences.",
+   "when": "Nov 17",
+   "sources": [
+    {
+     "name": "Virtualization Review",
+     "url": "https://virtualizationreview.com/articles/2026/11/17/microsoft-ignite-2026-top-azure-announcements-for-enterprise-it.aspx",
+     "tier": "outlet",
+     "read": "full page"
+    }
+   ]
+  },
+  {
+   "id": "w48-05",
+   "title": "Azure adds AI agents for cloud operations and launches Azure Catalyst for migrations",
+   "category": "Cloud",
+   "type": "release",
+   "niche": 3,
+   "region": "Global",
+   "topic": "Agentic cloud ops",
+   "why": "Agents can create and change cloud resources under policy. Good visual story for the cloud audience.",
+   "when": "Nov 17",
+   "sources": [
+    {
+     "name": "Virtualization Review",
+     "url": "https://virtualizationreview.com/articles/2026/11/17/microsoft-ignite-2026-top-azure-announcements-for-enterprise-it.aspx",
+     "tier": "outlet",
+     "read": "full page"
+    }
+   ]
+  },
+  {
+   "id": "w48-06",
+   "title": "OpenRouter drops 3 providers after Dragos finds months of prompt theft at AI hosting firms",
+   "category": "AI",
+   "type": "incident",
+   "niche": 4,
+   "region": "Global",
+   "topic": "AI agent security",
+   "severity": 2,
+   "why": "Your prompts can leak at the hosting layer, not the model. A clear, low-jargon story.",
+   "when": "Nov 22",
+   "sources": [
+    {
+     "name": "The Hacker News",
+     "url": "https://thehackernews.com/2026/11/openrouter-drops-3-providers-after.html",
+     "tier": "outlet",
+     "read": "listing excerpt"
+    }
+   ]
+  },
+  {
+   "id": "w48-07",
+   "title": "Attackers' AI agents found a zero-day in medical-imaging software and gained root",
+   "category": "AI",
+   "type": "incident",
+   "niche": 5,
+   "region": "Global",
+   "topic": "AI-driven attacks",
+   "severity": 3,
+   "why": "Autonomous agents finding flaws on their own, reported by Amazon Threat Intelligence. No fix yet.",
+   "when": "Nov 21",
+   "sources": [
+    {
+     "name": "The Hacker News",
+     "url": "https://thehackernews.com/2026/11/attackers-ai-agents-found-zero-day-in.html",
+     "tier": "outlet",
+     "read": "listing excerpt"
+    }
+   ]
+  },
+  {
+   "id": "w48-08",
+   "title": "AI-assisted attacks trigger unauthorized payments at Indian banks and fintech firms",
+   "category": "Cyber",
+   "type": "incident",
+   "niche": 3,
+   "region": "Global",
+   "topic": "AI-driven attacks",
+   "severity": 3,
+   "why": "CERT-In says attackers alter records and approval workflows. Fits a business-process-attack story.",
+   "when": "Nov 23",
+   "sources": [
+    {
+     "name": "The Hacker News",
+     "url": "https://thehackernews.com/2026/11/ai-assisted-cyberattacks-trigger.html",
+     "tier": "outlet",
+     "read": "listing excerpt"
+    }
+   ]
+  },
+  {
+   "id": "w48-09",
+   "title": "One malicious webpage let researchers hijack Meta Muse and read private chats",
+   "category": "AI",
+   "type": "incident",
+   "niche": 4,
+   "region": "Global",
+   "topic": "AI agent security",
+   "severity": 1,
+   "why": "Lab demonstration, since fixed by Meta. Shows how a chat assistant can be tricked by a page.",
+   "when": "Nov 21",
+   "sources": [
+    {
+     "name": "The Hacker News",
+     "url": "https://thehackernews.com/2026/11/a-single-malicious-webpage-let.html",
+     "tier": "outlet",
+     "read": "listing excerpt"
+    }
+   ]
+  },
+  {
+   "id": "w48-10",
+   "title": "Signal blocks AI agents from reading private chats through screenshots",
+   "category": "AI",
+   "type": "release",
+   "niche": 4,
+   "region": "Global",
+   "topic": "AI agent security",
+   "why": "A messenger fighting agents on your own phone. Signal admits the protection is incomplete.",
+   "when": "Nov 21",
+   "sources": [
+    {
+     "name": "The Hacker News",
+     "url": "https://thehackernews.com/2026/11/signal-blocks-ai-agents-from-reading.html",
+     "tier": "outlet",
+     "read": "listing excerpt"
+    }
+   ]
+  },
+  {
+   "id": "w48-11",
+   "title": "AI coding agents are getting malicious results from web search indexes, WebSec benchmark finds",
+   "category": "AI",
+   "type": "trend",
+   "niche": 5,
+   "region": "Global",
+   "topic": "AI agent security",
+   "why": "Agent web search is a new attack path. Only the headline was available, so details are unconfirmed.",
+   "when": "Nov 23",
+   "sources": [
+    {
+     "name": "The Hacker News (Expert Insights)",
+     "url": "https://thehackernews.com/expert-insights/2026/11/ai-coding-agents-are-getting-malicious.html",
+     "tier": "weak",
+     "read": "headline only"
+    }
+   ]
+  },
+  {
+   "id": "w48-12",
+   "title": "CISA adds four exploited flaws to KEV: Apache Roller, Cisco Expressway, SAP NetWeaver, VMware vCenter",
+   "category": "Cyber",
+   "type": "incident",
+   "niche": 2,
+   "region": "Global",
+   "topic": "Edge and VPN exploits",
+   "severity": 3,
+   "why": "Four enterprise products under active attack, one linked to a suspected China-nexus group.",
+   "when": "Nov 21",
+   "sources": [
+    {
+     "name": "The Hacker News",
+     "url": "https://thehackernews.com/2026/11/hackers-exploit-critical-vmware-cisco.html",
+     "tier": "outlet",
+     "read": "listing excerpt"
+    }
+   ]
+  },
+  {
+   "id": "w48-13",
+   "title": "Hackers exploit critical ScreenConnect flaw to hijack MSP technician PCs",
+   "category": "Cyber",
+   "type": "incident",
+   "niche": 3,
+   "region": "Global",
+   "topic": "Edge and VPN exploits",
+   "severity": 2,
+   "why": "Attacking the technician's PC to reach many clients. A supply-chain story people grasp fast.",
+   "when": "Nov 23",
+   "sources": [
+    {
+     "name": "The Hacker News",
+     "url": "https://thehackernews.com/2026/11/hackers-exploit-critical-screenconnect.html",
+     "tier": "outlet",
+     "read": "listing excerpt"
+    }
+   ]
+  },
+  {
+   "id": "w48-14",
+   "title": "Hackers used a GL.iNet cloud flaw to install malware on routers and KVM devices",
+   "category": "Cloud",
+   "type": "incident",
+   "niche": 4,
+   "region": "Global",
+   "topic": "Edge and VPN exploits",
+   "severity": 2,
+   "why": "Cloud-side fix is done, but infected devices still need firmware updates. Home and small-office angle.",
+   "when": "Nov 23",
+   "sources": [
+    {
+     "name": "The Hacker News",
+     "url": "https://thehackernews.com/2026/11/hackers-exploited-glinet-cloud-flaw-to.html",
+     "tier": "outlet",
+     "read": "listing excerpt"
+    }
+   ]
+  },
+  {
+   "id": "w48-15",
+   "title": "Hackers exploit defunct ASP.NET Anti-CSRF library for unauthenticated remote code execution",
+   "category": "Cyber",
+   "type": "incident",
+   "niche": 4,
+   "region": "Global",
+   "topic": "Edge and VPN exploits",
+   "severity": 2,
+   "why": "An abandoned library still running in apps. Researchers say stop using it.",
+   "when": "Nov 23",
+   "sources": [
+    {
+     "name": "The Hacker News",
+     "url": "https://thehackernews.com/2026/11/hackers-exploit-critical-aspnet-anti.html",
+     "tier": "outlet",
+     "read": "listing excerpt"
+    }
+   ]
+  }
+ ]
+}
